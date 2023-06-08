@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -8,6 +10,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int totalSeconds = 1500;
+  late Timer timer;
+
+  void onTick(Timer timer) {
+    setState(() {
+      totalSeconds = totalSeconds - 1;
+    });
+  }
+
+  void onStartPressed() {
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      onTick,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,25 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                "25:00",
+                '$totalSeconds',
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
-                  fontWeight: FontWeight.w600,
                   fontSize: 89,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
           ),
           Flexible(
-              flex: 3,
-              child: Center(
-                child: IconButton(
-                  iconSize: 120,
-                  color: Theme.of(context).cardColor,
-                  onPressed: () {},
-                  icon: const Icon(Icons.play_circle_outline),
-                ),
-              )),
+            flex: 3,
+            child: Center(
+              child: IconButton(
+                iconSize: 120,
+                color: Theme.of(context).cardColor,
+                onPressed: onStartPressed,
+                icon: const Icon(Icons.play_circle_outline),
+              ),
+            ),
+          ),
           Flexible(
             flex: 1,
             child: Row(
@@ -46,12 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(50),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Pomodors",
+                          'Pomodoros',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -60,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "0",
+                          '0',
                           style: TextStyle(
                             fontSize: 58,
                             fontWeight: FontWeight.w600,
@@ -74,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );
